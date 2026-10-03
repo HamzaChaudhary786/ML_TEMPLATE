@@ -1,0 +1,2 @@
+# Raw, immutable data files (never edit files here directly)
+# Add files like .csv, .parquet, .xlsx to this directory.

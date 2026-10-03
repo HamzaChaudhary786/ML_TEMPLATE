@@ -1,0 +1,182 @@
+================================================================================
+           MACHINE LEARNING PROJECT - FOLDER GUIDE & TASK REFERENCE
+================================================================================
+
+This guide explains WHY each folder exists and WHAT TASKS you perform inside it.
+
+--------------------------------------------------------------------------------
+1. configs/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  To avoid hardcoding parameters (paths, column names, model hyperparams)
+  inside your Python scripts. Change settings here without touching code.
+
+• WHAT TASKS YOU PERFORM:
+  - Define dataset paths (e.g. data/raw/dataset.csv).
+  - Specify the target column name and train/test split ratio (e.g. 0.2).
+  - List numerical and categorical feature names.
+  - Set model hyperparameters (e.g. n_estimators, max_depth, learning_rate).
+  - Configure random seed values (e.g. random_state: 42) for reproducibility.
+
+
+--------------------------------------------------------------------------------
+2. data/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  A dedicated home for all datasets so project code knows exactly where to look.
+
+  a) data/raw/
+     - WHY: Holds original, untouched source data (CSV, Excel, Parquet).
+     - TASKS: Download or drop raw source datasets here.
+       *RULE: Never edit, clean, or overwrite files in this folder.*
+
+  b) data/processed/
+     - WHY: Stores cleaned, transformed, and feature-engineered datasets.
+     - TASKS: Save train/test datasets here after cleaning and preprocessing.
+
+  c) data/external/
+     - WHY: Holds supplementary third-party data needed by the project.
+     - TASKS: Store lookup tables, postal codes, weather data, or benchmarks.
+
+
+--------------------------------------------------------------------------------
+3. notebooks/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  For interactive research, visualization, and rapid experimentation.
+
+• WHAT TASKS YOU PERFORM:
+  - Run initial Data Audits and Exploratory Data Analysis (EDA).
+  - Plot histograms, boxplots, and correlation heatmaps.
+  - Prototype new feature engineering ideas.
+  - Benchmark different algorithms (Random Forest vs XGBoost vs Logistic Reg).
+  - Keep notebooks ordered: 01_audit.ipynb, 02_eda.ipynb, 03_modeling.ipynb.
+
+
+--------------------------------------------------------------------------------
+4. src/ (Source Code Package)
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  Turns experimental notebook code into clean, modular, reusable Python packages
+  that can be executed as pipelines or deployed to production.
+
+  a) src/data/
+     - WHY: Handles data loading, checking, and quality control.
+     - TASKS:
+       * Ingest data from CSV, Parquet, or SQL (ingestion.py).
+       * Run overall and column-by-column automated audits (audit.py).
+       * Validate schema, check data types, and check null targets (validation.py).
+
+  b) src/preprocessing/
+     - WHY: Cleans data and prepares scikit-learn transformers.
+     - TASKS:
+       * Standardize column names to snake_case (cleaning.py).
+       * Remove duplicate rows and drop unneeded ID columns (cleaning.py).
+       * Build ColumnTransformers for scaling, imputing, and encoding (pipeline.py).
+       * Prevent data leakage by fitting ONLY on train data.
+
+  c) src/features/
+     - WHY: Creates informative features and removes useless noise.
+     - TASKS:
+       * Extract datetime features (year, month, day of week) (engineering.py).
+       * Create domain ratios or interaction terms (engineering.py).
+       * Drop constant, zero-variance, or collinear columns (selection.py).
+
+  d) src/models/
+     - WHY: Handles everything related to machine learning models.
+     - TASKS:
+       * Fit full pipeline (preprocessor + algorithm) on train set (train.py).
+       * Calculate metrics: Accuracy, Precision, Recall, F1, ROC-AUC (evaluate.py).
+       * Save performance report to reports/metrics.json (evaluate.py).
+       * Load saved pipeline to make predictions on new data (predict.py).
+
+  e) src/utils/
+     - WHY: Shared helper functions used across the whole project.
+     - TASKS:
+       * Set up unified console & file logging (logger.py).
+       * Load config.yaml and resolve absolute project paths (helpers.py).
+       * Save and load .joblib files safely (helpers.py).
+
+
+--------------------------------------------------------------------------------
+5. models/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  To store final trained model weights and full pipeline objects.
+
+• WHAT TASKS YOU PERFORM:
+  - Save fitted pipelines (e.g. model_pipeline.joblib).
+  - Load saved models into web apps (FastAPI/Streamlit) or batch scripts.
+  - Version different model checkpoints (e.g. baseline_v1.joblib, rf_v2.joblib).
+
+
+--------------------------------------------------------------------------------
+6. artifacts/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  Stores intermediate objects generated during the data pipeline.
+
+• WHAT TASKS YOU PERFORM:
+  - Save fitted standalone scalers, encoders, or tokenizers.
+  - Save feature column lists (JSON/pkl) to ensure test input matches train columns.
+
+
+--------------------------------------------------------------------------------
+7. reports/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  Stores model evaluation results, visual plots, and documentation for presentation.
+
+• WHAT TASKS YOU PERFORM:
+  - Save evaluation metrics to reports/metrics.json.
+  - Save visual charts to reports/figures/ (Confusion Matrix, ROC Curve, Feature Importance).
+  - Export final project presentation slides or PDF reports here.
+
+
+--------------------------------------------------------------------------------
+8. logs/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  Records timestamps, execution status, warnings, and errors automatically.
+
+• WHAT TASKS YOU PERFORM:
+  - Inspect app.log when a script fails or crashes.
+  - Track how long data loading or model training took.
+  - Verify row counts and pipeline steps during automated runs.
+
+
+--------------------------------------------------------------------------------
+9. scripts/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  Standalone, command-line executable scripts that run full workflows.
+
+• WHAT TASKS YOU PERFORM:
+  - Run the entire end-to-end training pipeline: python scripts/run_pipeline.py.
+  - Run batch scoring jobs on new incoming raw files.
+
+
+--------------------------------------------------------------------------------
+10. tests/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  Ensures your code doesn't break when you make changes or add new features.
+
+• WHAT TASKS YOU PERFORM:
+  - Test that data validation properly catches missing columns (test_data.py).
+  - Test that the preprocessing pipeline outputs correct shapes without nulls.
+  - Run automated tests by simply typing: pytest
+
+
+--------------------------------------------------------------------------------
+11. docs/
+--------------------------------------------------------------------------------
+• WHY WE USE IT:
+  Maintains business and technical documentation so anyone can understand the project.
+
+• WHAT TASKS YOU PERFORM:
+  - Maintain data_dictionary.md (defines every column, valid range, and null strategy).
+  - Document the workflow lifecycle in workflow.md.
+  - Store project setup guides and deployment instructions.
+
+================================================================================
